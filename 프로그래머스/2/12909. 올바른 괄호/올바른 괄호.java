@@ -1,23 +1,27 @@
-import java.util.*;
 class Solution {
     boolean solution(String s) {
-        boolean answer = true;
-        ArrayDeque<Character> deque = new ArrayDeque<>();
+        int stack = 0;
+        
+        for (int i =0; i < s.length(); i++) {
+            char c = s.charAt(i);
             
-        for (int i = 0; i < s.length(); i++) {
-            char parentheses = s.charAt(i);
-            if (parentheses == '(') {
-                deque.addLast('(');
-            } else if (parentheses == ')') {
-                if (deque.isEmpty())
+            if (c == '(' ) {
+                stack++;
+            }
+            else if (c == ')') {
+                if (stack == 0) {
                     return false;
-                deque.removeLast();
+                }
+                else {
+                    stack--;
+                }
             }
         }
         
-        if (!deque.isEmpty()) {
+        if (stack > 0) {
             return false;
         }
-        return answer;
+        
+        return true;
     }
 }
