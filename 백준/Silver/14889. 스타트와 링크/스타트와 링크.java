@@ -1,61 +1,65 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int N;
-	static int[][] map;
-	static boolean[] selected;
-	static int min = Integer.MAX_VALUE;
-	
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		// TODO Auto-generated method stub
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
-		
-		N = Integer.parseInt(br.readLine());
-		map = new int[N][N];
-		selected = new boolean[N];
-		
-		for (int i = 0; i < N; i++) {
-			st = new StringTokenizer(br.readLine());
-			for (int k = 0; k < N; k++) {
-				map[i][k] = Integer.parseInt(st.nextToken());
-			}
-		}
-		
-		dfs(0, 0);
-		System.out.println(min);
-	}
-	static void dfs(int depth, int index) {
-		if (depth == N / 2) {
-			caculate();
-			return ;
-		}
-		
-		for (int i = index; i < N; i++) {
-			if (!selected[i]) {
-				selected[i] = true;
-				dfs(depth + 1, i + 1);
-				selected[i] = false;
-			}
-		}
-	}
-	
-	static void caculate() {
-		int Steam = 0;
-		int Lteam = 0;
-		
-		for (int i =0; i < N; i++) {
-			for (int k = 0; k < N; k++) {
-				if (selected[i] && selected[k]) {
-					Steam += map[i][k];
-				} else if (!selected[i] && !selected[k])
-					Lteam += map[i][k];
-			}
-		}
-		int diff = Math.abs(Steam - Lteam);
-		min = Math.min(min, diff);
-	}
+    static int N;
+    static boolean[] select;
+    static int[][] arr;
+    static int min = Integer.MAX_VALUE;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+
+        arr = new int[N][N];
+        select = new boolean[N];
+
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int k = 0; k < N; k++) {
+                arr[i][k] = Integer.parseInt(st.nextToken());
+            }
+        }
+        dfs(0, 0);
+
+        System.out.println(min);
+    }
+
+    public static void dfs(int cnt, int start) {
+        // 종료 조건
+        if (cnt == N / 2) {
+            // 계산 들어가야함
+            min = Math.min(min, calcuration());
+            return;
+        }
+
+        for (int i = start; i < N; i++) {
+            if (!select[i]) {
+                select[i] = true;
+                dfs(cnt + 1, i + 1);
+                select[i] = false;
+            }
+        }
+    }
+
+    public static int calcuration() {
+        // 반복문 돌면서 값을 계산해야함
+        int s_team = 0;
+        int l_team = 0;
+
+        for (int i = 0; i < N; i++) {
+            for (int k = 0; k < N; k++) {
+                if (select[i] && select[k]) { // 둘 다 true면 같은 팀
+                    s_team += arr[i][k];
+                } else if (!select[i] && !select[k]) { // 둘 다 false면 상대팀
+                    l_team += arr[i][k];
+                }
+            }
+        }
+        return (Math.abs(s_team - l_team));
+    }
 }
