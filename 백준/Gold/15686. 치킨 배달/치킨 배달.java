@@ -49,6 +49,7 @@ public class Main {
 				}
 			}
 		}
+        
 		selected = new boolean[chicken.size()];
 		
 		dfs(0, 0);
@@ -56,7 +57,6 @@ public class Main {
 	}
 
 	private static void dfs(int start, int cnt) {
-		// TODO Auto-generated method stub
 		if (cnt == M) {
 			result = Math.min(result, checkDistance());
 			return;
@@ -72,7 +72,6 @@ public class Main {
 	}
 
 	private static int checkDistance() {
-		// TODO Auto-generated method stub
 		int total = 0;
 		
 		for (Point house : house) {
@@ -83,8 +82,7 @@ public class Main {
 				}
 			}
 			total += min;
-		}
-		
+		}	
 		return total;
 	} 
 }
