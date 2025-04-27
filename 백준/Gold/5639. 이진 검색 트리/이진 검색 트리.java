@@ -1,56 +1,56 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Main {
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
     static class Node {
-        int num;
+        int value;
         Node left, right;
 
-        Node(int num) {
-            this.num = num;
+        Node(int value) {
+            this.value = value;
         }
 
-        Node(int num, Node left, Node right) {
-            this.num = num;
-            this.left = left;
-            this.right = right;
-        }
-
-        void insert(int n) {
-            if (n < this.num) {
-                if (this.left == null)
-                    this.left = new Node(n);
-                else this.left.insert(n);
+        void insert(int val) {
+            if (val < this.value) {
+                if (this.left == null) {
+                    this.left = new Node(val);
+                } else {
+                    this.left.insert(val);
+                }
             } else {
-                if (this.right == null)
-                    this.right = new Node(n);
-                else this.right.insert(n);
+                if (this.right == null) {
+                    this.right = new Node(val);
+                } else {
+                    this.right.insert(val);
+                }
             }
         }
+    }
+
+    public static void postOrder(Node node) {
+        if (node == null) return;
+        postOrder(node.left);
+        postOrder(node.right);
+        System.out.println(node.value);
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        Node root = new Node(Integer.parseInt(br.readLine()));
+
+        Node root = null;
         String input;
-        while (true) {
-            input = br.readLine();
-            if (input == null || input.equals(""))
-                break;
-            root.insert(Integer.parseInt(input));
+
+        while ((input = br.readLine()) != null && !input.isEmpty()) {
+            int num = Integer.parseInt(input);
+            if (root == null) {
+                root = new Node(num);
+            } else {
+                root.insert(num);
+            }
         }
 
         postOrder(root);
-    }
-
-    static void postOrder(Node node) {
-        if (node == null)
-            return;
-
-        postOrder(node.left);
-        postOrder(node.right);
-        System.out.println(node.num);
     }
 }
