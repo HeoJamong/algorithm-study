@@ -1,5 +1,9 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
     static int N, M;
@@ -39,7 +43,7 @@ public class Main {
     }
 
     static int bfs() {
-        Deque<Node> queue = new ArrayDeque<>();
+        Queue<Node> queue = new ArrayDeque<>();
         queue.offer(new Node(0, 0, 1, 0));
         visited[0][0][0] = true;
 
@@ -54,17 +58,20 @@ public class Main {
 
                 if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
 
-                if (map[nx][ny] == 0 && !visited[nx][ny][cur.broken]) {
-                    visited[nx][ny][cur.broken] = true;
-                    queue.offer(new Node(nx, ny, cur.dist + 1, cur.broken));
+                int nextBroken = cur.broken;
+
+                if (map[nx][ny] == 1) {
+                    if (cur.broken == 1) continue;
+                    nextBroken = 1;
                 }
 
-                if (map[nx][ny] == 1 && cur.broken == 0 && !visited[nx][ny][1]) {
-                    visited[nx][ny][1] = true;
-                    queue.offer(new Node(nx, ny, cur.dist + 1, 1));
+                if (!visited[nx][ny][nextBroken]) {
+                    visited[nx][ny][nextBroken] = true;
+                    queue.offer(new Node(nx, ny, cur.dist + 1, nextBroken));
                 }
             }
         }
+
         return -1;
     }
 }
